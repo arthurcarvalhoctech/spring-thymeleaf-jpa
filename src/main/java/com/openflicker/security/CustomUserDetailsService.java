@@ -13,12 +13,13 @@ import com.openflicker.data.User;
 import com.openflicker.data.UserRepository;
 
 @Service
-public class UserDetailsServiceImpl {
+public class CustomUserDetailsService implements UserDetailsService{
 
     @Autowired
     private UserRepository userRepository;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println(username);
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 

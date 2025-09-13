@@ -1,10 +1,12 @@
 package com.openflicker.data;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.Optional;
 
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    // Spring Data JPA will automatically implement this method for us
-    // based on the method name. It will generate a query to find a User by its username.
+
     Optional<User> findByUsername(String username);
 }

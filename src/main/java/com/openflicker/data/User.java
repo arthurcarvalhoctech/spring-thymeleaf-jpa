@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data // Lombok annotation to create getters, setters, toString, etc.
 @Entity
-@Table(name = "users") // Explicitly name the table to avoid conflicts with SQL keywords like "user"
+@Table(name = "users")
 public class User {
 
     @Id
