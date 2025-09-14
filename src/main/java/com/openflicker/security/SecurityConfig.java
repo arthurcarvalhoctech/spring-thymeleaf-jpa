@@ -31,6 +31,7 @@ public class SecurityConfig {
                                         "/test/**",
                                         "/test",
                                         "/home",
+                                        "/dash",
                                         "/price"
                                 ).permitAll()
                         // All other requests must be authenticated

@@ -45,7 +45,11 @@ public class AppController {
 
     @GetMapping("/home")
     public String home() {
-
         return "home";
+    }
+
+    @GetMapping("/dash")
+    public String dash() {
+        return "dash";
     }
 }

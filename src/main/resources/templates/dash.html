@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard SaaS com Logo Interativo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fade-up { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        .animate-fade-up { animation: fade-up 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        .delay-100 { animation-delay: 0.1s; } .delay-200 { animation-delay: 0.2s; }
+
+        @keyframes grow { 0% { transform: scaleY(0); } 100% { transform: scaleY(1); } }
+        .animate-grow { animation: grow 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; transform-origin: bottom; }
+
+        #line-path { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw-line 2s ease-out forwards; }
+        @keyframes draw-line { to { stroke-dashoffset: 0; } }
+
+        :focus-visible { outline: 2px solid #4f46e5 !important; outline-offset: 2px; border-radius: 6px; }
+
+        .sidebar-text {
+            transition: opacity 0.2s ease-in-out, width 0.3s ease-in-out;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        aside.is-collapsed .sidebar-text {
+            opacity: 0;
+            width: 0;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 h-screen flex flex-col font-sans transition-colors duration-300 antialiased">
+
+<header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 h-16 flex items-center justify-between px-6 sticky top-0 z-20 transition-colors duration-300">
+    <div class="flex items-center space-x-4">
+        <button id="sidebar-toggle" aria-label="Abrir menu" class="lg:hidden p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+        </button>
+
+        <button class="js-sidebar-collapse-toggle hidden lg:flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded-lg focus-visible:outline-none">
+            <svg class="w-8 h-8 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="currentColor" fill-opacity="0.2"/>
+                <path d="M12 2L22 7V17L12 22L2 17V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 7L12 12L22 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 22V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="text-xl font-bold text-slate-800 dark:text-slate-200">Meu SaaS</span>
+        </button>
+    </div>
+
+    <div class="flex items-center space-x-5">
+        <nav class="hidden md:flex items-center space-x-4">
+            <a href="#" class="font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200">Perfil</a>
+            <a href="#" class="font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200">Configurações</a>
+            <a href="#" class="font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200">Sair</a>
+        </nav>
+        <button id="theme-toggle" aria-label="Alternar tema" class="p-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 hover:brightness-110 transition duration-300 rounded-lg">
+            <span id="theme-icon"></span>
+        </button>
+    </div>
+</header>
+
+<div class="flex flex-1 overflow-hidden relative">
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"></div>
+
+    <aside id="sidebar" class="bg-white dark:bg-gradient-to-b dark:from-slate-800 dark:to-slate-900 border-r border-slate-200 dark:border-slate-700 flex flex-col p-3 fixed lg:relative z-40 transform -translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out">
+
+        <nav class="flex-1 space-y-2 mt-8"> <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 rounded-lg font-semibold relative overflow-hidden transition-all duration-300">
+            <div class="absolute left-0 top-0 h-full w-1 bg-indigo-500 rounded-r-full"></div>
+            <svg xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 min-w-[20px]"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 8.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 018.25 20.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6A2.25 2.25 0 0115.75 3.75h2.25A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25A2.25 2.25 0 0113.5 8.25V6zM13.5 15.75A2.25 2.25 0 0115.75 13.5h2.25a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
+            <span class="sidebar-text">Dashboard</span>
+        </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-300 rounded-lg font-medium transform hover:translate-x-1 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 min-w-[20px]"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.663M12 10.5h.008v.008H12v-.008z" /></svg>
+                <span class="sidebar-text">Clientes</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-300 rounded-lg font-medium transform hover:translate-x-1 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 min-w-[20px]"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM21 21l-5.197-5.197" /></svg>
+                <span class="sidebar-text">Relatórios</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto">
+            <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
+                <a href="#" class="flex items-center gap-3 p-3 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-200">
+                    <img class="h-10 w-10 min-w-[40px] rounded-full object-cover" src="https://i.pravatar.cc/100?u=a042581f4e29026704d" alt="Avatar do usuário">
+                    <div class="sidebar-text">
+                        <p class="font-semibold text-sm text-slate-800 dark:text-slate-100">Ana Clara</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Plano Premium</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto transition-all duration-300 ease-in-out">
+        <h1 class="text-3xl font-bold mb-8 text-slate-900 dark:text-slate-100">Dashboard</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div class="bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-[0_8px_30px_rgb(99,102,241,0.15)] border border-slate-200 dark:border-slate-700 rounded-xl animate-fade-up flex flex-col gap-2">
+                <span class="text-slate-500 dark:text-slate-400 font-medium">Clientes Ativos</span>
+                <span class="text-indigo-600 dark:text-indigo-400 font-bold text-3xl">1.245</span>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-[0_8px_30px_rgb(99,102,241,0.15)] border border-slate-200 dark:border-slate-700 rounded-xl animate-fade-up delay-100 flex flex-col gap-2">
+                <span class="text-slate-500 dark:text-slate-400 font-medium">Vendas Mensais</span>
+                <span class="text-indigo-600 dark:text-indigo-400 font-bold text-3xl">$ 32.400</span>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-[0_8px_30px_rgb(99,102,241,0.15)] border border-slate-200 dark:border-slate-700 rounded-xl animate-fade-up delay-200 flex flex-col gap-2">
+                <span class="text-slate-500 dark:text-slate-400 font-medium">Novos Usuários</span>
+                <span class="text-indigo-600 dark:text-indigo-400 font-bold text-3xl">87</span>
+            </div>
+        </div>
+
+        <div class="mt-10 grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <div class="lg:col-span-3 bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-[0_8px_30px_rgb(99,102,241,0.15)] border border-slate-200 dark:border-slate-700 rounded-xl">
+                <h2 class="font-semibold mb-4 text-slate-800 dark:text-slate-200">Visão Geral de Vendas</h2>
+                <div class="flex items-end justify-between h-56" id="bar-container"></div>
+            </div>
+            <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-[0_8px_30px_rgb(99,102,241,0.15)] border border-slate-200 dark:border-slate-700 rounded-xl">
+                <h2 class="font-semibold mb-4 text-slate-800 dark:text-slate-200">Atividade Semanal</h2>
+                <svg viewBox="0 0 300 100" class="w-full h-56">
+                    <path id="line-path" d="M0,60 C50,20 100,80 150,50 C200,20 250,70 300,40"
+                          fill="transparent" stroke="#6366F1" stroke-width="3"
+                          stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+    </main>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        initMobileSidebar();
+        initDesktopSidebar();
+        initBarChart();
+
+        function initTheme() {
+            const themeToggle = document.getElementById("theme-toggle");
+            const themeIcon = document.getElementById("theme-icon");
+            const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.95-4.243l-1.59-1.59M3.75 12H6m.386-6.364L7.93 7.07M12 6.75a5.25 5.25 0 100 10.5 5.25 5.25 0 000-10.5z" /></svg>`;
+            const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>`;
+            const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const storedTheme = localStorage.getItem("theme");
+            const isDark = storedTheme === "dark" || (storedTheme === null && isSystemDark);
+            if (isDark) { document.documentElement.classList.add('dark'); themeIcon.innerHTML = sunIcon; }
+            else { document.documentElement.classList.remove('dark'); themeIcon.innerHTML = moonIcon; }
+            themeToggle.addEventListener("click", () => {
+                const isDarkNow = document.documentElement.classList.toggle("dark");
+                localStorage.setItem("theme", isDarkNow ? "dark" : "light");
+                themeIcon.innerHTML = isDarkNow ? sunIcon : moonIcon;
+            });
+        }
+
+        function initMobileSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const sidebarToggle = document.getElementById("sidebar-toggle");
+            const sidebarOverlay = document.getElementById("sidebar-overlay");
+            const toggleSidebar = () => {
+                sidebar.classList.toggle("-translate-x-full");
+                sidebarOverlay.classList.toggle("hidden");
+            };
+            sidebarToggle.addEventListener("click", toggleSidebar);
+            sidebarOverlay.addEventListener("click", toggleSidebar);
+        }
+
+        // ✅ ATUALIZADO: Lógica do Sidebar agora controlada por uma classe comum
+        function initDesktopSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            // Seleciona todos os botões que devem controlar o colapso
+            const collapseToggles = document.querySelectorAll(".js-sidebar-collapse-toggle");
+            const navLinks = sidebar.querySelectorAll("nav a");
+            const profileLink = sidebar.querySelector(".mt-auto a");
+
+            const applyCollapsedState = (collapsed) => {
+                if (collapsed) {
+                    sidebar.classList.add("is-collapsed", "w-20");
+                    sidebar.classList.remove("w-64");
+                    navLinks.forEach(link => link.classList.add("justify-center"));
+                    profileLink.classList.add("justify-center");
+                } else {
+                    sidebar.classList.remove("is-collapsed", "w-20");
+                    sidebar.classList.add("w-64");
+                    navLinks.forEach(link => link.classList.remove("justify-center"));
+                    profileLink.classList.remove("justify-center");
+                }
+            };
+
+            const savedState = localStorage.getItem("sidebarState");
+            const isCollapsed = savedState === "collapsed";
+            applyCollapsedState(isCollapsed);
+
+            // Adiciona o evento de clique para todos os botões de controle
+            collapseToggles.forEach(toggle => {
+                toggle.addEventListener("click", () => {
+                    const currentState = sidebar.classList.contains("is-collapsed");
+                    applyCollapsedState(!currentState);
+                    localStorage.setItem("sidebarState", !currentState ? "collapsed" : "expanded");
+                });
+            });
+        }
+
+        function initBarChart() {
+            const barData = [80, 60, 90, 50, 70, 100, 40, 85, 55, 75];
+            const barContainer = document.getElementById("bar-container");
+            if (barContainer) {
+                barContainer.innerHTML = '';
+                barData.forEach(value => {
+                    const barWrapper = document.createElement("div");
+                    barWrapper.className = "group relative flex-1 h-full flex items-end justify-center";
+                    const tooltip = document.createElement("span");
+                    tooltip.className = "absolute -top-8 text-sm font-semibold text-white bg-slate-900 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none";
+                    tooltip.textContent = value;
+                    const bar = document.createElement("div");
+                    bar.className = "w-4/5 bg-indigo-500 dark:bg-indigo-400 rounded-t-lg animate-grow";
+                    bar.style.height = `${value}%`;
+                    barWrapper.appendChild(tooltip);
+                    barWrapper.appendChild(bar);
+                    barContainer.appendChild(barWrapper);
+                });
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
