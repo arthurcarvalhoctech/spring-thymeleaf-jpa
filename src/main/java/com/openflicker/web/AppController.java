@@ -13,21 +13,18 @@ public class AppController {
     @GetMapping("/login")
     public String login() {
         // Return the name of the Thymeleaf template for the login page
-        System.out.println("login");
         return "login";
     }
 
     @GetMapping("/test")
     public String test() {
         // Return the name of the Thymeleaf template for the login page
-        System.out.println("test");
         return "test";
     }
 
     @GetMapping("/price")
     public String price() {
         // Return the name of the Thymeleaf template for the login page
-        System.out.println("price");
         return "price";
     }
 

@@ -6,7 +6,7 @@
     <title>Dashboard SaaS com Logo Interativo</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,11 +45,29 @@
             opacity: 0;
             width: 0;
         }
+
+        /* ✅ NOVO: Regra de CSS para exibir o tooltip ao passar o mouse */
+        aside.is-collapsed .group:hover .sidebar-text {
+            visibility: visible;
+            opacity: 1;
+            width: auto; /* Permite que o texto apareça */
+            position: absolute;
+            left: 100%;
+            margin-left: 0.75rem; /* 12px de espaço */
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            background-color: #1f2937; /* slate-800 */
+            color: #f1f5f9; /* slate-100 */
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500;
+            z-index: 50;
+            transition: opacity 0.2s;
+        }
     </style>
 </head>
 <body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 h-screen flex flex-col font-sans transition-colors duration-300 antialiased">
 
-<header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 h-16 flex items-center justify-between px-6 sticky top-0 z-20 transition-colors duration-300">
+<header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 h-16 flex items-center justify-between px-6 sticky top-0 z-20 transition-colors duration-300 shadow-xl">
     <div class="flex items-center space-x-4">
         <button id="sidebar-toggle" aria-label="Abrir menu" class="lg:hidden p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
@@ -66,12 +84,12 @@
         </button>
     </div>
 
-    <div class="flex items-center space-x-5">
-        <nav class="hidden md:flex items-center space-x-4">
-            <a href="#" class="font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200">Perfil</a>
-            <a href="#" class="font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200">Configurações</a>
-            <a href="#" class="font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200">Sair</a>
-        </nav>
+    <div class="flex items-center space-x-4">
+        <div class="relative hidden md:block">
+            <svg class="w-5 h-5 text-slate-400 absolute top-1/2 -translate-y-1/2 left-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" /></svg>
+            <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 w-64 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+
         <button id="theme-toggle" aria-label="Alternar tema" class="p-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 hover:brightness-110 transition duration-300 rounded-lg">
             <span id="theme-icon"></span>
         </button>
@@ -81,23 +99,22 @@
 <div class="flex flex-1 overflow-hidden relative">
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"></div>
 
-    <aside id="sidebar" class="bg-white dark:bg-gradient-to-b dark:from-slate-800 dark:to-slate-900 border-r border-slate-200 dark:border-slate-700 flex flex-col p-3 fixed lg:relative z-40 transform -translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out">
-
-        <nav class="flex-1 space-y-2 mt-8"> <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 rounded-lg font-semibold relative overflow-hidden transition-all duration-300">
-            <div class="absolute left-0 top-0 h-full w-1 bg-indigo-500 rounded-r-full"></div>
-            <svg xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 min-w-[20px]"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 8.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 018.25 20.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6A2.25 2.25 0 0115.75 3.75h2.25A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25A2.25 2.25 0 0113.5 8.25V6zM13.5 15.75A2.25 2.25 0 0115.75 13.5h2.25a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
-            <span class="sidebar-text">Dashboard</span>
-        </a>
-            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-300 rounded-lg font-medium transform hover:translate-x-1 transition-all duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 min-w-[20px]"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.663M12 10.5h.008v.008H12v-.008z" /></svg>
-                <span class="sidebar-text">Clientes</span>
+    <aside id="sidebar" class="bg-white dark:bg-gradient-to-b dark:from-slate-800 dark:to-slate-900 border-r border-slate-200 dark:border-slate-700 flex flex-col p-3 fixed lg:relative z-40 transform -translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out shadow-xl">
+        <nav class="flex-1 space-y-2 mt-8">
+            <a href="#" class="group relative flex items-center gap-3 px-3 py-2.5 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 rounded-lg font-semibold transition-all duration-300">
+                <div class="absolute left-0 top-0 h-full w-1 bg-indigo-500 rounded-r-full"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 min-w-[28px]"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 8.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 018.25 20.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6A2.25 2.25 0 0115.75 3.75h2.25A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25A2.25 2.25 0 0113.5 8.25V6zM13.5 15.75A2.25 2.25 0 0115.75 13.5h2.25a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
+                <span class="sidebar-text text-base">Dashboard</span>
             </a>
-            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-300 rounded-lg font-medium transform hover:translate-x-1 transition-all duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 min-w-[20px]"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM21 21l-5.197-5.197" /></svg>
-                <span class="sidebar-text">Relatórios</span>
+            <a href="#" class="group relative flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-300 rounded-lg font-medium transform hover:translate-x-1 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 min-w-[28px]"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.663M12 10.5h.008v.008H12v-.008z" /></svg>
+                <span class="sidebar-text text-base">Clientes</span>
+            </a>
+            <a href="#" class="group relative flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-indigo-600 dark:hover:text-indigo-300 rounded-lg font-medium transform hover:translate-x-1 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 min-w-[28px]"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM21 21l-5.197-5.197" /></svg>
+                <span class="sidebar-text text-base">Relatórios</span>
             </a>
         </nav>
-
         <div class="mt-auto">
             <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
                 <a href="#" class="flex items-center gap-3 p-3 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-lg transition-colors duration-200">
@@ -113,28 +130,26 @@
 
     <main class="flex-1 p-8 overflow-y-auto transition-all duration-300 ease-in-out">
         <h1 class="text-3xl font-bold mb-8 text-slate-900 dark:text-slate-100">Dashboard</h1>
-
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-            <div class="bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-[0_8px_30px_rgb(99,102,241,0.15)] border border-slate-200 dark:border-slate-700 rounded-xl animate-fade-up flex flex-col gap-2">
+            <div class="bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-indigo-500/10 border border-slate-200 dark:border-slate-700 rounded-xl animate-fade-up flex flex-col gap-2">
                 <span class="text-slate-500 dark:text-slate-400 font-medium">Clientes Ativos</span>
                 <span class="text-indigo-600 dark:text-indigo-400 font-bold text-3xl">1.245</span>
             </div>
-            <div class="bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-[0_8px_30px_rgb(99,102,241,0.15)] border border-slate-200 dark:border-slate-700 rounded-xl animate-fade-up delay-100 flex flex-col gap-2">
+            <div class="bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-indigo-500/10 border border-slate-200 dark:border-slate-700 rounded-xl animate-fade-up delay-100 flex flex-col gap-2">
                 <span class="text-slate-500 dark:text-slate-400 font-medium">Vendas Mensais</span>
                 <span class="text-indigo-600 dark:text-indigo-400 font-bold text-3xl">$ 32.400</span>
             </div>
-            <div class="bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-[0_8px_30px_rgb(99,102,241,0.15)] border border-slate-200 dark:border-slate-700 rounded-xl animate-fade-up delay-200 flex flex-col gap-2">
+            <div class="bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-indigo-500/10 border border-slate-200 dark:border-slate-700 rounded-xl animate-fade-up delay-200 flex flex-col gap-2">
                 <span class="text-slate-500 dark:text-slate-400 font-medium">Novos Usuários</span>
                 <span class="text-indigo-600 dark:text-indigo-400 font-bold text-3xl">87</span>
             </div>
         </div>
-
         <div class="mt-10 grid grid-cols-1 lg:grid-cols-5 gap-8">
-            <div class="lg:col-span-3 bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-[0_8px_30px_rgb(99,102,241,0.15)] border border-slate-200 dark:border-slate-700 rounded-xl">
+            <div class="lg:col-span-3 bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-indigo-500/10 border border-slate-200 dark:border-slate-700 rounded-xl">
                 <h2 class="font-semibold mb-4 text-slate-800 dark:text-slate-200">Visão Geral de Vendas</h2>
                 <div class="flex items-end justify-between h-56" id="bar-container"></div>
             </div>
-            <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-[0_8px_30px_rgb(99,102,241,0.15)] border border-slate-200 dark:border-slate-700 rounded-xl">
+            <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 shadow-lg dark:shadow-indigo-500/10 border border-slate-200 dark:border-slate-700 rounded-xl">
                 <h2 class="font-semibold mb-4 text-slate-800 dark:text-slate-200">Atividade Semanal</h2>
                 <svg viewBox="0 0 300 100" class="w-full h-56">
                     <path id="line-path" d="M0,60 C50,20 100,80 150,50 C200,20 250,70 300,40"
@@ -183,10 +198,8 @@
             sidebarOverlay.addEventListener("click", toggleSidebar);
         }
 
-        // ✅ ATUALIZADO: Lógica do Sidebar agora controlada por uma classe comum
         function initDesktopSidebar() {
             const sidebar = document.getElementById("sidebar");
-            // Seleciona todos os botões que devem controlar o colapso
             const collapseToggles = document.querySelectorAll(".js-sidebar-collapse-toggle");
             const navLinks = sidebar.querySelectorAll("nav a");
             const profileLink = sidebar.querySelector(".mt-auto a");
@@ -196,12 +209,12 @@
                     sidebar.classList.add("is-collapsed", "w-20");
                     sidebar.classList.remove("w-64");
                     navLinks.forEach(link => link.classList.add("justify-center"));
-                    profileLink.classList.add("justify-center");
+                    if(profileLink) profileLink.classList.add("justify-center");
                 } else {
                     sidebar.classList.remove("is-collapsed", "w-20");
                     sidebar.classList.add("w-64");
                     navLinks.forEach(link => link.classList.remove("justify-center"));
-                    profileLink.classList.remove("justify-center");
+                    if(profileLink) profileLink.classList.remove("justify-center");
                 }
             };
 
@@ -209,7 +222,6 @@
             const isCollapsed = savedState === "collapsed";
             applyCollapsedState(isCollapsed);
 
-            // Adiciona o evento de clique para todos os botões de controle
             collapseToggles.forEach(toggle => {
                 toggle.addEventListener("click", () => {
                     const currentState = sidebar.classList.contains("is-collapsed");
